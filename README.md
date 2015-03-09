@@ -21,6 +21,6 @@ Notes:
    - You can write your own unmarshaller as long as it reifies your configuration into com.ncleung.storm.topology.dynamic.StormTopologyRepresentation
    - You can remove the default unmarshaller implementation and gson dependency if you don't want it
   Arguments for bolt / spout creation or method invocation can be specified as follows:
-   - String: set "value", and do not set "argumentType" or "implementationType"
+   - String: set "value", and do not set "argumentType"
    - POJO creation / method invocation: each argument is treated as an argument for the constructor
    - List / Array: each argument is treated as an element of the list / array
