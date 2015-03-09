@@ -1,0 +1,47 @@
+{
+  "name"  : "DynamicWordCountTopology",
+  "spouts" : [
+    {
+      "name"        : "RandomSentenceSpout",
+      "className"   : "storm.starter.spout.RandomSentenceSpout",
+      "numTasks"    : 1,
+      "maxPending"  : 128
+    }
+  ],
+  "bolts" : [
+    {
+      "name"        : "SplitSentenceBolt",
+      "className"   : "storm.starter.WordCountTopology$SplitSentence",
+      "numTasks"    : 4,
+      "dependencies": [
+        {
+          "grouping": "shuffleGrouping",
+          "arguments": [ { "value" : "RandomSentenceSpout" } ]
+        }
+      ]
+    },
+    {
+      "name"        : "WordCountBolt",
+      "className"   : "storm.starter.WordCountTopology$WordCount",
+      "numTasks"    : 2,
+      "dependencies": [
+        {
+          "grouping": "fieldsGrouping",
+          "arguments": [
+            { "value" : "SplitSentenceBolt" },
+            {
+              "argumentType" : "backtype.storm.tuple.Fields",
+              "arguments"    : [
+                {
+                  "argumentType"  : "java.util.ArrayList",
+                  "arguments"     : [ { "value" : "word" } ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "numWorkers" : 1
+}
