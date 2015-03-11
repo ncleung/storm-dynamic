@@ -58,7 +58,7 @@ public class ReflectionHelpers {
             }
 
             for (int i = 0; i < arguments.argumentObjects.length; ++i) {
-                if (!paramTypes[i].isAssignableFrom(arguments.argumentObjects[i].getClass())) {
+                if (!paramTypes[i].isAssignableFrom(arguments.argumentTypes[i])) {
                     continue methodLoop;
                 }
             }
@@ -132,12 +132,6 @@ public class ReflectionHelpers {
             builder.append(argClass.getName()).append(":");
         }
         throw new NoSuchMethodException(builder.toString());
-    }
-
-    public static void main(String args[]) throws Exception {
-        Integer intArr[] = new Integer[0];
-        System.out.println(intArr.getClass().getName());
-        //Array.newInstance
     }
 
 }
