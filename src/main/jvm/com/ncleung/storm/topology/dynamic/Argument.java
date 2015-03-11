@@ -11,31 +11,47 @@ import java.util.HashMap;
 public class Argument {
     // type used to lookup arguments in method/constructor
     String argumentType;
-    // type used to create the argument
-    String implementationType;
     // String used to construct this argument
     String value;
     // arguments used to build this argument
     List<Argument> arguments;
 
-    static Map<String, Class> primitiveMap;
+    static Map<String, Class> primitiveTypeMap;
     static {
-        primitiveMap = new HashMap();
-        primitiveMap.put("byte"     , byte.class    );
-        primitiveMap.put("short"    , short.class   );
-        primitiveMap.put("int"      , int.class     );
-        primitiveMap.put("long"     , long.class    );
-        primitiveMap.put("float"    , float.class   );
-        primitiveMap.put("double"   , double.class  );
-        primitiveMap.put("boolean"  , boolean.class );
-        primitiveMap.put("char"     , char.class    );
+        primitiveTypeMap = new HashMap();
+        primitiveTypeMap.put("byte"     , byte.class    );
+        primitiveTypeMap.put("short"    , short.class   );
+        primitiveTypeMap.put("int"      , int.class     );
+        primitiveTypeMap.put("long"     , long.class    );
+        primitiveTypeMap.put("float"    , float.class   );
+        primitiveTypeMap.put("double"   , double.class  );
+        primitiveTypeMap.put("boolean"  , boolean.class );
+        primitiveTypeMap.put("char"     , char.class    );
+    }
+    static Map<String, Class> primitiveImplementationMap;
+    static {
+        primitiveImplementationMap = new HashMap();
+        primitiveImplementationMap.put("byte"       , Byte.class        );
+        primitiveImplementationMap.put("short"      , Short.class       );
+        primitiveImplementationMap.put("int"        , Integer.class     );
+        primitiveImplementationMap.put("long"       , Long.class        );
+        primitiveImplementationMap.put("float"      , Float.class       );
+        primitiveImplementationMap.put("double"     , Double.class      );
+        primitiveImplementationMap.put("boolean"    , Boolean.class     );
+        primitiveImplementationMap.put("char"       , Character.class   );
     }
 
     public Class getClass(String className) throws ClassNotFoundException {
-        Class mapped = primitiveMap.get(className);
-        if (mapped != null) {
+        Class mapped = primitiveTypeMap.get(className);
+        if (mapped != null)
             return mapped;
-        }
+        return Class.forName(className);
+    }
+
+    public Class getImplementationClass(String className) throws ClassNotFoundException {
+        Class mapped = primitiveImplementationMap.get(className);
+        if (mapped != null)
+            return mapped;
         return Class.forName(className);
     }
 
@@ -46,10 +62,8 @@ public class Argument {
     }
 
     public Class getImplementationType() throws ClassNotFoundException {
-        if (implementationType != null)
-            return getClass(implementationType);
         if (argumentType != null)
-            return getClass(argumentType);
+            return getImplementationClass(argumentType);
         return String.class;
     }
 
